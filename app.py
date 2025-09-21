@@ -28,10 +28,10 @@ def get_valid_integer(prompt, min_val=None, max_val=None):
         try:
             value = int(input(prompt))
             if min_val is not None and value < min_val:
-                print(f"Please enter a number >= {min_val}")
+                print(f"Please enter a number larger than {min_val}")
                 continue
             if max_val is not None and value > max_val:
-                print(f"Please enter a number <= {max_val}")
+                print(f"Please enter a number smaller than {max_val}")
                 continue
             return value
         except ValueError:
