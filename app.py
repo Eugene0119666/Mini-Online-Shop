@@ -1,3 +1,7 @@
+## Import required packaged
+import os
+import time
+
 ## Sample data for products
 categories = ["Sports","Electronics","Furniture"]
 items = [["Yonex Badminton Racquet","Felet Badminton Racquet","Nike Runner Shoes Mark II","Puma Jogging Socks"],
