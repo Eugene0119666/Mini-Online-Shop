@@ -116,3 +116,41 @@ def edit_cart():
     
     elif edit_choice == 3:
         print("Edit cancelled.")
+
+def display_cart_items():
+    """Display items in cart with numbering"""
+    if not shopping_cart:
+        print("Your cart is empty!")
+        time.sleep(3)
+        return
+    
+    print("-" * 60)
+    print(f"{'No.':<3} {'Product':<25} {'Price':<8} {'Qty':<5} {'Total':<8}")
+    print("-" * 60)
+    
+    for idx, (cart_key, cart_qty) in enumerate(shopping_cart.items(), 1):
+        cat_index, item_index = cart_key
+        item_name = items[cat_index][item_index]
+        item_price = price[cat_index][item_index]
+        total_price = item_price * cart_qty
+        print(f"{idx:<3} {item_name:<25} ${item_price:<7} {cart_qty:<5} ${total_price:<7}")
+
+def display_cart_summary():
+    """Display cart summary with total"""
+    if not shopping_cart:
+        print("Your cart is empty!")
+        return 0
+    
+    print("\n=== Shopping Cart Summary ===")
+    display_cart_items()
+    
+    total_items = sum(shopping_cart.values())
+    total_price = sum(price[cat_index][item_index] * cart_qty 
+                     for (cat_index, item_index), cart_qty in shopping_cart.items())
+    
+    print("-" * 60)
+    print(f"Total Items: {total_items}")
+    print(f"Total Price: ${total_price}")
+    print("-" * 60)
+    
+    return total_price
