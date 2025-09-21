@@ -45,3 +45,74 @@ def add_to_cart(cat_index, item_index, qty):
     # Update inventory
     quantity[cat_index][item_index] -= qty
     print(f"Added {qty} x {items[cat_index][item_index]} to cart!")
+
+
+def edit_cart():
+    """Edit items in shopping cart - modify quantity or remove"""
+    if not shopping_cart:
+        print("Your cart is empty!")
+        return
+    
+    print("\n=== Edit Cart ===")
+    display_cart_items()
+    
+    # Get valid item selection
+    max_items = len(shopping_cart)
+    choice = get_valid_integer(f"Enter item number to edit (1-{max_items}), 0 to cancel: ", 0, max_items)
+    
+    if choice == 0:
+        return
+    
+    cart_items = list(shopping_cart.items())
+    cart_key, current_qty = cart_items[choice - 1]
+    cat_index, item_index = cart_key
+    item_name = items[cat_index][item_index]
+    
+    print(f"\nSelected: {item_name}")
+    print(f"Current quantity in cart: {current_qty}")
+    print(f"Available stock: {quantity[cat_index][item_index]}")
+    
+    print("\nOptions:")
+    print("1. Update quantity")
+    print("2. Remove item completely")
+    print("3. Cancel")
+    
+    edit_choice = get_valid_integer("Choose option (1-3): ", 1, 3)
+    
+    if edit_choice == 1:
+        # Update quantity
+        max_available = quantity[cat_index][item_index] + current_qty  # Current cart qty + available stock
+        print(f"Enter new quantity (current: {current_qty}, max available: {max_available})")
+        new_qty = get_valid_integer("New quantity: ", 1, max_available)
+        
+        # Calculate the difference
+        qty_difference = new_qty - current_qty
+        
+        if qty_difference > 0:
+            # Adding more items
+            shopping_cart[cart_key] = new_qty
+            quantity[cat_index][item_index] -= qty_difference
+            print(f"Updated quantity to {new_qty}")
+            
+        elif qty_difference < 0:
+            # Removing some items - return to inventory
+            shopping_cart[cart_key] = new_qty
+            quantity[cat_index][item_index] += abs(qty_difference)
+            print(f"Updated quantity to {new_qty}")
+            
+        else:
+            print("Quantity unchanged.")
+    
+    elif edit_choice == 2:
+        # Remove item completely
+        if get_yes_no_input(f"Are you sure you want to remove {item_name}? (y/n): "):
+            # Return all items to inventory
+            quantity[cat_index][item_index] += current_qty
+            # Remove from cart
+            del shopping_cart[cart_key]
+            print(f"Removed {item_name} from cart!")
+        else:
+            print("Removal cancelled.")
+    
+    elif edit_choice == 3:
+        print("Edit cancelled.")
