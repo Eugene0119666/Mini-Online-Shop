@@ -33,3 +33,15 @@ def display_products(cat_index):
         rating = reviews[cat_index][i]
         print(f"{i + 1:<3} {name:<30} ${item_price:<7} {stock:<7} {rating:<7}")
     print("-" * 70)
+
+def add_to_cart(cat_index, item_index, qty):
+    """Add item to shopping cart"""
+    cart_key = (cat_index, item_index)
+    if cart_key in shopping_cart:
+        shopping_cart[cart_key] += qty
+    else:
+        shopping_cart[cart_key] = qty
+    
+    # Update inventory
+    quantity[cat_index][item_index] -= qty
+    print(f"Added {qty} x {items[cat_index][item_index]} to cart!")
