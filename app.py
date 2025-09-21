@@ -18,6 +18,37 @@ reviews = [
 # Shopping cart dictionary to store items {(category_index, item_index): quantity}
 shopping_cart = {}
 
+def get_valid_integer(prompt, min_val=None, max_val=None):
+    """Get a valid integer input from user with range validation"""
+    while True:
+        try:
+            value = int(input(prompt))
+            if min_val is not None and value < min_val:
+                print(f"Please enter a number >= {min_val}")
+                continue
+            if max_val is not None and value > max_val:
+                print(f"Please enter a number <= {max_val}")
+                continue
+            return value
+        except ValueError:
+            print("Please enter a valid number.")
+
+def get_yes_no_input(prompt):
+    """Get a valid yes/no input from user"""
+    while True:
+        response = input(prompt).lower().strip()
+        if response in ['y', 'yes']:
+            return True
+        elif response in ['n', 'no']:
+            return False
+        else:
+            print("Please enter 'y' for yes or 'n' for no.")
+
+def clear_screen():
+    """Clear screen in a cross-platform way"""
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+
 def display_products(cat_index):
     """Display products"""
     print(f"\n=== {categories[cat_index]} ===")
