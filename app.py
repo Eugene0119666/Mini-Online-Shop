@@ -154,3 +154,96 @@ def display_cart_summary():
     print("-" * 60)
     
     return total_price
+
+def main_menu():
+    """Display main menu and handle user choices"""
+    while True:
+        clear_screen()
+        print("\n=== Mini Online Shop ===")
+        print("1. Browse Sports")
+        print("2. Browse Electronics") 
+        print("3. Browse Furniture")
+        print("4. View Cart")
+        print("5. Edit Cart")
+        print("6. Checkout")
+        print("7. Exit")
+        
+        choice = get_valid_integer("Enter your choice (1-7): ", 1, 7)
+        
+        if choice in [1, 2, 3]:
+            clear_screen()
+            cat_index = choice - 1
+            
+            display_products(cat_index)
+            
+            # Product selection with validation
+            max_products = len(items[cat_index])
+            product_choice = get_valid_integer(f"Select product (1-{max_products}), 0 to go back: ", 0, max_products)
+            
+            if product_choice == 0:
+                continue
+            
+            clear_screen()
+            item_index = product_choice - 1
+            
+            # Show product details
+            print(f"\nProduct: {items[cat_index][item_index]}")
+            print(f"Price: ${price[cat_index][item_index]}")
+            print(f"Rating: {reviews[cat_index][item_index]}/5")
+            print(f"Available: {quantity[cat_index][item_index]} units")
+            
+            # Quantity input with validation
+            max_qty = quantity[cat_index][item_index]
+            if max_qty == 0:
+                print("Sorry, this item is out of stock!")
+                input("Press Enter to continue...")
+                continue
+            
+            qty = get_valid_integer(f"Enter quantity (1-{max_qty}): ", 1, max_qty)
+            
+            # Add to cart
+            add_to_cart(cat_index, item_index, qty)
+            input("\nPress Enter to continue...")
+        
+        elif choice == 4:
+            clear_screen()
+            display_cart_summary()
+            input("\nPress Enter to continue...")
+        
+        elif choice == 5:
+            clear_screen()
+            edit_cart()
+            input("\nPress Enter to continue...")
+        
+        elif choice == 6:
+            clear_screen()
+            if not shopping_cart:
+                print("Your cart is empty!")
+                input("Press Enter to continue...")
+                continue
+            
+            total_price = display_cart_summary()
+            
+            if get_yes_no_input("\nDo you want to proceed with the purchase? (y/n): "):
+                clear_screen()
+                shopping_cart.clear()
+                print(f"\nThank you for your purchase of ${total_price}!")
+                print("Your order has been confirmed!")
+                input("Press Enter to continue...")
+            else:
+                print("Purchase cancelled. Items remain in your cart.")
+                input("Press Enter to continue...")
+        
+        elif choice == 7:
+            clear_screen()
+            if shopping_cart:
+                print("\nYou have items in your cart:")
+                display_cart_summary()
+                print("Thank you for visiting!")
+            else:
+                print("Thank you for visiting!")
+            break
+
+# Start the application
+if __name__ == "__main__":
+    main_menu()
