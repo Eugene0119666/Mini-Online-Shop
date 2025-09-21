@@ -17,4 +17,19 @@ reviews = [
 
 # Shopping cart dictionary to store items {(category_index, item_index): quantity}
 shopping_cart = {}
+
+def display_products(cat_index):
+    """Display products"""
+    print(f"\n=== {categories[cat_index]} ===")
     
+    print("-" * 70)
+    print(f"{'No.':<3} {'Product':<30} {'Price':<8} {'Stock':<7} {'Rating':<7}")
+    print("-" * 70)
+    
+    for i in range(len(items[cat_index])):
+        name = items[cat_index][i]
+        item_price = price[cat_index][i]
+        stock = quantity[cat_index][i]
+        rating = reviews[cat_index][i]
+        print(f"{i + 1:<3} {name:<30} ${item_price:<7} {stock:<7} {rating:<7}")
+    print("-" * 70)
